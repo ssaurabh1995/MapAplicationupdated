@@ -1,5 +1,8 @@
 package com.example.saurabh.mapapplication;
 
+import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -8,8 +11,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Adapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -32,14 +39,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.zip.Inflater;
+
+import static com.example.saurabh.mapapplication.R.id.search;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    ImageLoader loader;
-
+    private ImageView location;
+    private ImageView plus;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +58,50 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        location = (ImageView) findViewById(R.id.location);
+        plus= (ImageView) findViewById(R.id.plus);
+
+            location.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        geolocator();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+
+
+        plus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MapsActivity.this, MainActivity.class);
+                startActivity(i);
+
+            }
+        });
+
     }
+    public void geolocator() throws IOException {
+        Intent intent=getIntent();
+        Toast.makeText(this, "Press on Location Icon", Toast.LENGTH_SHORT).show();
+        if (intent!=null){
+            String gps=intent.getStringExtra("gps");
+            Geocoder gc=new Geocoder(this);
+            List<Address> list = gc.getFromLocationName(gps,1);
+            Address address=list.get(0);
+            String locality=address.getLocality();
+            Double lat=address.getLatitude();
+            Double lng=address.getLongitude();
+            Gotolocation(lat,lng,6);
+            MarkerOptions options=new MarkerOptions().position(new LatLng(lat,lng));
+            mMap.addMarker(options);
+        }
+    }
+
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {

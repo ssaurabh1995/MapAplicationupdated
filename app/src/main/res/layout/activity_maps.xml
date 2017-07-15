@@ -50,13 +50,15 @@
         map:srcCompat="@drawable/ic_tag_faces_black_24dp" />
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/location"
         android:layout_width="35dp"
         android:layout_height="35dp"
         map:srcCompat="@drawable/ic_gps_fixed_black_24dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="12dp" />
+
+
     <SearchView
         android:layout_width="match_parent"
         android:layout_height="30dp"
