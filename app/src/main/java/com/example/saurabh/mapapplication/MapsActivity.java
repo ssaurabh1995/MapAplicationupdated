@@ -86,18 +86,21 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
     public void geolocator() throws IOException {
         Intent intent=getIntent();
-        Toast.makeText(this, "Press on Location Icon", Toast.LENGTH_SHORT).show();
         if (intent!=null){
             String gps=intent.getStringExtra("gps");
+            if(gps!=null){
             Geocoder gc=new Geocoder(this);
             List<Address> list = gc.getFromLocationName(gps,1);
             Address address=list.get(0);
-            String locality=address.getLocality();
             Double lat=address.getLatitude();
             Double lng=address.getLongitude();
             Gotolocation(lat,lng,6);
             MarkerOptions options=new MarkerOptions().position(new LatLng(lat,lng));
             mMap.addMarker(options);
+            }
+            else{
+                Toast.makeText(this, "click + first", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
