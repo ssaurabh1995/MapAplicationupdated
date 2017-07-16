@@ -22,10 +22,12 @@ public class MainActivity extends AppCompatActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String gp=place.getText().toString();
+                String gps=place.getText().toString();
                 Intent intent=new Intent(MainActivity.this,MapsActivity.class);
-                intent.putExtra("gp",gp);
+                intent.putExtra("gps",gps);
                 startActivity(intent);
+                 Toast.makeText(MainActivity.this, "press Location Icon", Toast.LENGTH_SHORT).show();
+                
             }
         });
 
